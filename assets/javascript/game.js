@@ -155,5 +155,6 @@ $(document).ready(function {
         runTimer();
         displayQuestion();
     })
-    
+})
+})   
     

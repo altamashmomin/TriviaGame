@@ -1,4 +1,4 @@
-$(document).ready(function {
+$(document).ready(function() {
 
     var questions = [
         {
@@ -50,7 +50,7 @@ $(document).ready(function {
             question: "What was Minato most famous for?",
             choices: ["Fire Style Ninjutsu","Earth Style Ninjutsu","Lightening Style Ninjutsu","Crystal Style Ninjutsu", "Space-time Style Ninjutsu"],
             answer: 4,
-        }],
+        }];
     
     var correctCount = 0;
     var wrongCount = 0;
@@ -74,6 +74,7 @@ $(document).ready(function {
         for(var i = 0; i < questions.length; i++) {
             holder.push(questions[i]);
         }
+    })
     
     function runTimer(){
         if(!running){
@@ -83,13 +84,14 @@ $(document).ready(function {
     }
     
     function decrement() {
-        $("#timeLeft").html("<h2>Time Remaining: " + timer + "</h3>");
+        $("#timeleft").html("<h2>Time Remaining: " + timer + "</h3>");
         timer --;
     
         if (timer === 0) {
             unanswered++;
             stop();
-            $("#answers").html("Time's up! The correct answer is: " + pick.questions[pick.answer] + "</p>");
+            $("#answerblock").html("Time's up! The correct answer is: " + pick.choices[pick.answer] + "</p>")
+            showStats();
         }
     }
     
@@ -110,9 +112,9 @@ $(document).ready(function {
                 userChoice.attr("data-guessedVal", i);
                 $("#answerblock").append(userChoice);
             }
-    }
     
-    $(".answerchoose").on("click", function(){
+    
+    $(".answerchoice").on("click", function(){
         userGuess = parseInt($(this).attr("data-guessedVal"));
     
         if (userGuess === pick.answer){
@@ -120,29 +122,42 @@ $(document).ready(function {
             correctCount++;
             userGuess = "";
             $("#answerblock").html("<p>Yeah! You got it right.</p>");
+            showStats();
+
         } else {
             stop();
             wrongCount++;
             userGuess = "";
             $("#answerblock").html("<p>Sorry! That's not right. The correct answer was: " + pick.choices[pick.answer] + "</p>");
+            showStats();
         }
     })
+}
     
     function showStats(){
-        if ((wrongCount + correctCount + unanswerCount) === questCount) {
+        newArray.push(pick);
+        questions.splice(index,1);
+
+        var showStats = setTimeout(function() {
+            $("#answerblock").empty();
+            
+
+        if ((wrongCount + correctCount + unanswered) === questCount || timer === 0) {
             $("#questionblock").empty();
             $("#questionblock").html("<h2>Game over! Here are your stats for the game: </h2>");
             $("#questionblock").append("<h3>Correct: " + correctCount + "</h3>");
             $("#questionblock").append("<h3>Incorrect: " + wrongCount + "</h3>");
-            $("#questionblock").append("<h3>Unanswered: " + unansweredCount + "</h3>");
+            $("#questionblock").append("<h3>Unanswered: " + unanswered + "</h3>");
             $("#reset").show();
             correctCount = 0;
             wrongCount = 0;
             unanswerCount = 0;
+
         } else {
             runTimer();
             displayQuestion();
-        };
+        }
+        }, 2000);
     }
     
     $("#reset").on("click", function(){
@@ -156,5 +171,4 @@ $(document).ready(function {
         displayQuestion();
     })
 })
-})   
-    
+   

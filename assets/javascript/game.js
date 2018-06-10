@@ -55,7 +55,7 @@ $(document).ready(function() {
     var correctCount = 0;
     var wrongCount = 0;
     var unanswered = 0;
-    var timer = 20;
+    var timer = 60;
     var intervalId;
     var running = false;
     var pick;
@@ -141,6 +141,7 @@ $(document).ready(function() {
         var showStats = setTimeout(function() {
             $("#answerblock").empty();
             
+            
 
         if ((wrongCount + correctCount + unanswered) === questCount || timer === 0) {
             $("#questionblock").empty();
@@ -161,6 +162,7 @@ $(document).ready(function() {
     }
     
     $("#reset").on("click", function(){
+        timer = 60;
         $("#reset").hide();
         $("#answerblock").empty();
         $("#questionblock").empty();
